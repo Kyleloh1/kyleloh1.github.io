@@ -1,70 +1,128 @@
 ---
-
 // src/layouts/Layout.astro
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import portrait from '../assets/profile.jpg';
 import '../styles/global.css';
-const { title } = Astro.props;
+
+interface Props {
+  title: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  noindex = false,
+  description = 'Kyle Loh — applied mathematics at Florida Atlantic University. Rigorous numerics for optimizers, conformal inference, and the mathematical foundations of machine learning.',
+} = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://kyleloh1.github.io');
+
+const sections = [
+  { href: '/#about', label: 'About' },
+  { href: '/#research', label: 'Research' },
+  { href: '/#publications', label: 'Publications' },
+  { href: '/#awards', label: 'Awards' },
+];
+
+const pages = [
+  { href: '/blogs', label: 'Writing' },
+  { href: '/teaching', label: 'Teaching' },
+];
+
+const social = [
+  { href: 'https://github.com/Kyleloh1', icon: 'mdi:github', label: 'GitHub' },
+  { href: 'https://scholar.google.com/citations?user=JsXe-TgAAAAJ&hl=en', icon: 'simple-icons:googlescholar', label: 'Google Scholar' },
+  { href: 'https://www.youtube.com/channel/UC_G7YxEksu7C9z5A08fdv7g', icon: 'mdi:youtube', label: 'YouTube' },
+  { href: 'https://www.linkedin.com/in/kyle-loh-a2a3272a9/', icon: 'mdi:linkedin', label: 'LinkedIn' },
+  { href: 'mailto:kloh2023@fau.edu', icon: 'mdi:email-outline', label: 'Email' },
+];
 ---
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Kyle Loh" />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonical} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kyle Loh" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/apple-touch-icon.png', canonical)} />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="icon" type="image/jpeg" href="/profile.jpg" />
-    <link rel="apple-touch-icon" href="/profile.jpg" />
-    <title>{title}</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"
+    />
   </head>
+
   <body>
-    <aside class="sidebar">
-      <img src="/profile.jpg" alt="Kyle Loh" class="photo" />
-      <h1>Kyle Loh</h1>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-      <div class="icons">
-        <a href="https://github.com/Kyleloh1" class="icon-btn" aria-label="GitHub">
-          <Icon name="mdi:github" />
-        </a>
-        <a href="https://scholar.google.com/citations?user=JsXe-TgAAAAJ&hl=en" class="icon-btn" aria-label="Google Scholar">
-          <Icon name="simple-icons:googlescholar" />
-        </a>
-        <a href="https://www.youtube.com/channel/UC_G7YxEksu7C9z5A08fdv7g" class="icon-btn" aria-label="YouTube">
-          <Icon name="mdi:youtube" />
-        </a>
-        <a href="https://www.linkedin.com/in/kyle-loh-a2a3272a9/" class="icon-btn" aria-label="LinkedIn">
-          <Icon name="mdi:linkedin" />
-        </a>
-        <a href="mailto:kloh2023@fau.edu" class="icon-btn" aria-label="Email">
-          <Icon name="mdi:email" />
-        </a>
-      </div>
+    <div class="shell">
+      <aside class="rail">
+        <div class="rail-head">
+          <a href="/" aria-label="Home">
+            <Image
+              src={portrait}
+              alt="Kyle Loh"
+              class="portrait"
+              width={208}
+              densities={[1, 2]}
+              loading="eager"
+              fetchpriority="high"
+            />
+          </a>
+          <div>
+            <a class="wordmark" href="/">Kyle Loh</a>
+            <p class="role">Applied Mathematics<br />Florida Atlantic University</p>
+          </div>
+        </div>
 
-      <nav>
-        <a href="/#about">About Me</a>
-        <a href="/#research">Research</a>
-        <a href="/#publications">Publications</a>
-        <a href="/#awards">Awards</a>
-        <a href="/blogs">Blogs</a>
-        <a href="/teaching">Teaching</a>
-        <a href="/cv.pdf" target="_blank" rel="noopener">CV</a>   <!-- new -->
-      </nav>   
-    </aside>
+        <nav aria-label="Primary">
+          <div class="nav-group">
+            {sections.map((item) => <a href={item.href}>{item.label}</a>)}
+          </div>
+          <div class="nav-group">
+            {pages.map((item) => (
+              <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>
+                {item.label}
+              </a>
+            ))}
+            <a href="/cv.pdf" target="_blank" rel="noopener">Curriculum Vitae</a>
+          </div>
+        </nav>
 
-    <main class="content">
-      <slot />
-    </main>
+        <div class="social">
+          {social.map((item) => (
+            <a
+              href={item.href}
+              aria-label={item.label}
+              target={item.href.startsWith('mailto:') ? undefined : '_blank'}
+              rel={item.href.startsWith('mailto:') ? undefined : 'noopener'}
+            >
+              <Icon name={item.icon} />
+            </a>
+          ))}
+        </div>
+      </aside>
 
-    <style>
-      .icons { display: flex; gap: 0.5rem; justify-content: center; }
-      .icon-btn {
-        display: flex; align-items: center; justify-content: center;
-        width: 2.3rem; height: 2.3rem;
-        background: #ffffff; border-radius: 0.6rem;
-        color: #1a1a1a; transition: transform 0.15s ease;
-      }
-      .icon-btn:hover { transform: translateY(-2px); }
-      .icon-btn svg { width: 1.23rem; height: 1.23rem; }
-    </style>
+      <main class="content" id="main">
+        <slot />
+      </main>
+    </div>
   </body>
 </html>

@@ -2,34 +2,48 @@
 // src/pages/teaching.astro
 import Layout from '../layouts/Layout.astro';
 ---
-<Layout title="Teaching — Kyle Loh">
-  <section id="teaching">
-    <h2>Teaching</h2>
 
-    <h3>Kyle Loh's Math (YouTube)</h3>
-    <p>I run a YouTube channel with math tutorials. Here's one video you might like:</p>
+<Layout
+  title="Teaching — Kyle Loh"
+  description="Kyle Loh's mathematics teaching: YouTube tutorials and openly available tutoring notes."
+>
+  <header class="masthead">
+    <h1>Teaching</h1>
+    <p class="standfirst">Lectures, tutorials, and notes I have written for students</p>
+  </header>
 
-    <div class="video-wrapper">
+  <section id="youtube">
+    <h2>YouTube</h2>
+    <p class="lede">I run a channel of mathematics tutorials. Here is one to start with.</p>
+
+    <div class="video">
       <iframe
-        src="https://www.youtube.com/embed/wPaA1QblObs"
-        title="Spotlight video"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
+        src="https://www.youtube-nocookie.com/embed/wPaA1QblObs"
+        title="Kyle Loh's Math — featured tutorial"
+        loading="lazy"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
     </div>
 
     <a class="btn" href="https://www.youtube.com/channel/UC_G7YxEksu7C9z5A08fdv7g" target="_blank" rel="noopener">
-      Visit my YouTube channel →
+      All videos &rarr;
     </a>
+  </section>
 
-    <h3 style="margin-top:4.0rem; margin-bottom:1.25rem">Tutoring Resources</h3>
-    <article class="card">
-      <div class="card-body">
-        <h3><a href="https://github.com/Kyleloh1/FAUHS-Biology-Notes" target="_blank" rel="noopener">FAUHS Biology Notes</a></h3>
-        <p>A complete set of 9th-grade biology notes I wrote and used while tutoring students.</p>
-        <div class="tags">
-          <a class="tag tag-code" href="https://github.com/Kyleloh1/FAUHS-Biology-Notes" target="_blank" rel="noopener">GitHub</a>
+  <section id="notes">
+    <h2>Notes</h2>
+    <article class="entry">
+      <div class="entry-body">
+        <h3>
+          <a href="https://github.com/Kyleloh1/FAUHS-Biology-Notes" target="_blank" rel="noopener">
+            FAUHS Biology Notes
+          </a>
+        </h3>
+        <p>A complete set of ninth-grade biology notes I wrote and used while tutoring students.</p>
+        <div class="meta">
+          <span class="venue">Course notes</span>
+          <a href="https://github.com/Kyleloh1/FAUHS-Biology-Notes" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
     </article>

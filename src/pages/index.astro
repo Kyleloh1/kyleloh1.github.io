@@ -1,101 +1,194 @@
 ---
 // src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import encoderDecoder from '../assets/encoder-decoder.png';
+import torusDoubling from '../assets/rmsprop-torus-doubling-data-hero.png';
+import heterogeneousNulls from '../assets/decentralized-heterogeneous-nulls.png';
 
 interface Publication {
   title: string;
+  alt?: string;
+  wide?: boolean;
   authors: string;
   venue: string;
-  link?: string;   // URL the title points to
+  link?: string;
+  arxiv?: string;
   cite?: string;
   blog?: string;
   code?: string;
-  figure?: string;
+  figure?: ImageMetadata;
 }
 
 const publications: Publication[] = [
-  { title: "Optimal Linear Baselines for Scientific Machine Learning",
-    authors: 'Alexander DeLise, <span class="me">Kyle Loh</span>, Krish Patel, Meredith Teague, Andrea Arnold, Matthias Chung',
-    venue: "Foundations of Data Science",
-    link: "https://www.aimsciences.org/article/doi/10.3934/fods.2026012", 
-	blog: "https://www.math.emory.edu/site/cmds-reuret/projects/2025-model-aware/",
-	code: "https://github.com/Kyleloh1/CMDS-REU-MADDI", 
-	figure: "/encoder-decoder.png"
-},
-  { title: "Decentralized Conformal Novelty Detection via Quantized Model Exchange",
+  {
+    title: 'Optimal Linear Baseline Models for Scientific Machine Learning',
+    authors:
+      'Alexander DeLise, <span class="me">Kyle Loh</span>, Krish Patel, Meredith Teague, Andrea Arnold, Matthias Chung',
+    venue: 'Foundations of Data Science',
+    link: 'https://www.aimsciences.org/article/doi/10.3934/fods.2026012',
+    arxiv: 'https://arxiv.org/abs/2508.05831',
+    blog: 'https://www.math.emory.edu/site/cmds-reuret/projects/2025-model-aware/',
+    code: 'https://github.com/Kyleloh1/CMDS-REU-MADDI',
+    figure: encoderDecoder,
+    alt: 'Encoder-decoder schematic mapping an input y through a latent code z to an output x.',
+  },
+  {
+    title: 'Decentralized Conformal Novelty Detection via Quantized Model Exchange',
     authors: '<span class="me">Kyle Loh</span>, Yu Xiang',
-    venue: "arXiv",
-    link: "https://arxiv.org/abs/2605.08263", 
-	code:  "https://github.com/Kyleloh1/Decentralized-Conformal-Novelty-Detection"},
+    venue: 'arXiv preprint',
+    link: 'https://arxiv.org/abs/2605.08263',
+    // code: 'https://github.com/Kyleloh1/Decentralized-Conformal-Novelty-Detection',  // repo offline pending revision
+    figure: heterogeneousNulls,
+    alt: `Four agents, each holding a different local null distribution, shown as four separate Gaussian
+      point clouds with distinct spreads and orientations.`,
+  },
 ];
 
-const interests = [
-  { heading: "Rigorous Numerics for Optimizers",
-    body: `Modern neural networks are typically trained with adaptive optimizers like RMSProp and Adam, which often operate in a chaotic regime called the 
-	Edge of Stability. My work uses computer-assisted proofs to rigorously validate quasiperiodic and chaotic structures, and their corresponding routes to chaos in these optimizers. Eventually, I hope to develop
-	a comprehensive theory explaining which mechanisms in an adaptive optimizer drive chaotic behavior. If you're interested, check out these visualizers 
-	for <a href="https://kyleloh1.github.io/RMSProp/" target="_blank" rel="noopener">RMSProp</a> and
-	 <a href="https://kyleloh1.github.io/Adam/" target="_blank" rel="noopener">Adam</a>.`,
-    figure: "/edge-of-stability.png" },
-  { heading: "Conformal Inference", 
-	body: `Conformal inference offers a distribution-free way to flag anomalous data with rigorous, finite-sample statistical guarantees. I am developing conformal inference
-	frameworks that bound the false discovery rate when various constraints are placed -- for example, decentralization, limited communication bandwidth, non-exchangeability.` },
+interface Interest {
+  heading: string;
+  alt?: string;
+  wide?: boolean;
+  body: string;
+  figure?: ImageMetadata;
+}
+
+const interests: Interest[] = [
+  {
+    heading: 'Rigorous numerics for optimizers',
+    body: `Modern neural networks are typically trained with adaptive optimizers like RMSProp and Adam, which often
+      operate in a chaotic regime called the Edge of Stability. My work uses computer-assisted proofs to rigorously
+      validate quasiperiodic and chaotic structures, and their corresponding routes to chaos, in these optimizers.
+      Eventually I hope to develop a comprehensive theory explaining which mechanisms in an adaptive optimizer drive
+      chaotic behavior. If you are curious, here are interactive visualizers for
+      <a href="https://kyleloh1.github.io/RMSProp/" target="_blank" rel="noopener">RMSProp</a> and
+      <a href="https://kyleloh1.github.io/Adam/" target="_blank" rel="noopener">Adam</a>.`,
+    figure: torusDoubling,
+    wide: true,
+    alt: 'A torus-doubling cascade in RMSProp, shown in four panels: smooth invariant curves break up into progressively more scattered point clouds as a parameter is varied.',
+  },
+  {
+    heading: 'Conformal inference',
+    body: `Conformal inference offers a distribution-free way to flag anomalous data with rigorous, finite-sample
+      statistical guarantees. I am developing conformal inference frameworks that bound the false discovery rate
+      under practical constraints &mdash; decentralization, limited communication bandwidth, and non-exchangeability.`,
+  },
 ];
 
 const awards = [
-  "Barry M. Goldwater Scholarship (2026)",
-  "Phi Kappa Phi Scholarship (2026)",
-  "OURI Research Grant (2026)",
-  "Mu Alpha Theta Summer Grant (2024)",
-  // …add the rest
+  { year: '2026', name: 'Barry M. Goldwater Scholarship' },
+  { year: '2026', name: 'Phi Kappa Phi Scholarship' },
+  { year: '2026', name: 'OURI Research Grant' },
+  { year: '2024', name: 'Mu Alpha Theta Summer Grant' },
 ];
+
+const about = `I am a fourth-year joint B.S.&ndash;M.S. student at Florida Atlantic University studying applied
+  mathematics, where I work with
+  <a href="https://www.math.fau.edu/people/faculty/mirelesjames.php" target="_blank" rel="noopener">Jason Mireles-James</a>
+  and <a href="https://sites.google.com/site/yuxianghomepage/" target="_blank" rel="noopener">Yu Xiang</a>.`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Kyle Loh',
+  url: 'https://kyleloh1.github.io/',
+  jobTitle: 'Joint B.S.–M.S. student in Applied Mathematics',
+  affiliation: { '@type': 'CollegeOrUniversity', name: 'Florida Atlantic University' },
+  knowsAbout: [
+    'Applied mathematics',
+    'Rigorous numerics',
+    'Dynamical systems',
+    'Conformal inference',
+    'Machine learning theory',
+  ],
+  sameAs: [
+    'https://github.com/Kyleloh1',
+    'https://scholar.google.com/citations?user=JsXe-TgAAAAJ&hl=en',
+    'https://www.linkedin.com/in/kyle-loh-a2a3272a9/',
+  ],
+};
 ---
-<Layout title="Kyle Loh">
-	<section id="about">
-		<h2>About Me</h2>
-		<p>I am currently a 4th-year joint B.S.-M.S. student at Florida Atlantic University studying Applied Mathematics, where I am working 
-		with <a href="https://www.math.fau.edu/people/faculty/mirelesjames.php" target="_blank" rel="noopener">Jason Mireles-James</a> and <a href="https://sites.google.com/site/yuxianghomepage/" target="_blank" rel="noopener">Yu Xiang</a>.</p>
-	</section>
+
+<Layout title="Kyle Loh — Applied Mathematics">
+  <header class="masthead">
+    <h1>Kyle Loh</h1>
+    <p class="standfirst">Rigorous numerics &middot; Conformal inference &middot; Foundations of machine learning</p>
+  </header>
+
+  <section id="about">
+    <h2>About</h2>
+    <p set:html={about} />
+  </section>
 
   <section id="research">
-	<h2>Research Interests</h2>
-	<p>My research is focused on the mathematical foundations of machine learning and using these principles to develop better algorithms.</p>
-	{interests.map((it) => (
-		<article class="card">
-		  <div class="card-body">
-			<h3 style="color:#1a1a1a">{it.heading}</h3>
-			<p set:html={it.body} />
-		  </div>
-		  {it.figure && <img class="figure" src={it.figure} alt="" />}
-		</article>
-	  ))}
+    <h2>Research</h2>
+    <p class="lede">
+      My research is focused on the mathematical foundations of machine learning, and on using those foundations to
+      build better algorithms.
+    </p>
+    {interests.map((it) => (
+      <article class:list={['entry', it.wide && 'is-wide']}>
+        <div class="entry-body">
+          <h3>{it.heading}</h3>
+          <p set:html={it.body} />
+        </div>
+        {it.figure && (
+          <Image
+            class="entry-figure"
+            src={it.figure}
+            alt={it.alt ?? ''}
+            width={it.wide ? 1200 : 336}
+            densities={it.wide ? [1] : [1, 2]}
+            loading="lazy"
+          />
+        )}
+      </article>
+    ))}
   </section>
 
   <section id="publications">
-	<h2>Publications</h2>
-	{publications.map((p) => (
-	  <article class="card">
-		<div class="card-body">
-			<h3>
-  				{p.link
-    				? <a href={p.link} target="_blank" rel="noopener">{p.title}</a>
-    				: p.title}
-			</h3>
-		  <p class="authors" set:html={p.authors} />
-		  <div class="tags">
-			<span class="tag tag-venue">{p.venue}</span>
-			{p.blog && <a class="tag tag-blog" href={p.blog}>Blog Post</a>}
-			{p.code && <a class="tag tag-code" href={p.code}>Code</a>}
-			{p.cite && <a class="tag tag-cite" href={p.cite}>Cite</a>}
-		  </div>
-		</div>
-		{p.figure && <img class="figure" src={p.figure} alt="" />}
-	  </article>
-	))}
+    <h2>Publications</h2>
+    {publications.map((p) => (
+      <article class:list={['entry', p.wide && 'is-wide']}>
+        <div class="entry-body">
+          <h3>
+            {p.link ? <a href={p.link} target="_blank" rel="noopener">{p.title}</a> : p.title}
+          </h3>
+          <p class="authors" set:html={p.authors} />
+          <div class="meta">
+            <span class="venue">{p.venue}</span>
+            {p.arxiv && <a href={p.arxiv} target="_blank" rel="noopener">arXiv</a>}
+            {p.blog && <a href={p.blog} target="_blank" rel="noopener">Blog post</a>}
+            {p.code && <a href={p.code} target="_blank" rel="noopener">Code</a>}
+            {p.cite && <a href={p.cite} target="_blank" rel="noopener">Cite</a>}
+          </div>
+        </div>
+        {p.figure && (
+          <Image
+            class="entry-figure"
+            src={p.figure}
+            alt={p.alt ?? ''}
+            width={p.wide ? 1200 : 336}
+            densities={p.wide ? [1] : [1, 2]}
+            loading="lazy"
+          />
+        )}
+      </article>
+    ))}
   </section>
 
   <section id="awards">
     <h2>Awards</h2>
-    <ul>{awards.map((a) => <li>{a}</li>)}</ul>
+    <ul class="ledger">
+      {awards.map((a) => (
+        <li>
+          <span class="year">{a.year}</span>
+          <span>{a.name}</span>
+        </li>
+      ))}
+    </ul>
   </section>
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 </Layout>

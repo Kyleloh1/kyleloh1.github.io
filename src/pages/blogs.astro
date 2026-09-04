@@ -1,21 +1,104 @@
 ---
 // src/pages/blogs.astro
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import localityFig from '../assets/sgi-locality-geometric-algorithms.png';
+import texturesFig from '../assets/sgi-self-rectifying-textures.png';
 
-const posts = [
-  { title: "Filler", date: "July 2526",
-    excerpt: "A short summary of the post.", href: "#" },
+interface Post {
+  title: string;
+  href: string;
+  date: string;
+  venue?: string;
+  authors?: string;
+  excerpt: string;
+  figure?: ImageMetadata;
+  alt?: string;
+  wide?: boolean;
+}
+
+// Newest first.
+const posts: Post[] = [
+  {
+    title: 'Locality in Geometric Algorithms',
+    href: 'https://summergeometry.org/sgi2026/locality-in-geometric-algorithms/',
+    date: 'August 2026',
+    venue: 'MIT SGI',
+    authors: '<span class="me">Kyle Loh</span>, Preet Savalia',
+    excerpt: `Morton, Hilbert, and Tipsify reorderings applied to mesh simplification. Ordering vertices for cache
+      locality cut edge-collapse time by up to 18% against a random ordering, without changing the result of the
+      computation.`,
+    figure: localityFig,
+    wide: true,
+    alt: `The same lamp mesh rendered four times, coloured by vertex index under random, Morton, Hilbert and
+      Tipsify orderings. The random ordering is visually uniform noise, while the three locality-aware orderings
+      produce smooth contiguous colour bands over the surface.`,
+  },
+  {
+    title: 'Self-Rectifying Textures',
+    href: 'https://summergeometry.org/sgi2026/self-rectifying-textures/',
+    date: 'August 2026',
+    venue: 'MIT SGI',
+    authors: '<span class="me">Kyle Loh</span>, Mahlet Girma, Max Dunitz',
+    excerpt: `Textures that look like noise but hide a regular lattice in their autocorrelation. Measuring how that
+      lattice deforms in a photograph recovers the surface deformation without visible markers, via a rectification
+      pipeline built on Delaunay triangulation and finite elements, and extended to cylindrical surfaces.`,
+    figure: texturesFig,
+    wide: true,
+    alt: `Left: a deformed texture of overlapping loops that reads as random noise. Right: its autocorrelation,
+      in which a regular lattice of bright peaks emerges from the apparent noise.`,
+  },
 ];
+
+const isExternal = (href: string) => href.startsWith('http');
 ---
-<Layout title="Blogs — Kyle Loh">
-  <section id="blogs">
-    <h2>Blogs</h2>
-    {posts.map((post) => (
-      <article class="post">
-        <h3><a href={post.href}>{post.title}</a></h3>
-        <p class="date">{post.date}</p>
-        <p>{post.excerpt}</p>
-      </article>
-    ))}
+
+<Layout
+  title="Writing — Kyle Loh"
+  description="Notes and expository writing by Kyle Loh on geometry processing, applied mathematics, and machine learning."
+>
+  <header class="masthead">
+    <h1>Writing</h1>
+    <p class="standfirst">Notes, expository pieces, and work in progress</p>
+  </header>
+
+  <section id="posts">
+    <h2>Posts</h2>
+    {posts.length === 0 ? (
+      <p class="empty">Nothing published yet — the first post is in progress.</p>
+    ) : (
+      posts.map((post) => (
+        <article class:list={['entry', post.wide && 'is-wide']}>
+          <div class="entry-body">
+            <h3>
+              <a
+                href={post.href}
+                target={isExternal(post.href) ? '_blank' : undefined}
+                rel={isExternal(post.href) ? 'noopener' : undefined}
+              >
+                {post.title}
+              </a>
+            </h3>
+            {post.authors && <p class="authors" set:html={post.authors} />}
+            <p>{post.excerpt}</p>
+            <div class="meta">
+              {post.venue && <span class="venue">{post.venue}</span>}
+              <span>{post.date}</span>
+            </div>
+          </div>
+          {post.figure && (
+            <Image
+              class="entry-figure"
+              src={post.figure}
+              alt={post.alt ?? ''}
+              width={post.wide ? 1200 : 336}
+              densities={post.wide ? [1] : [1, 2]}
+              loading="lazy"
+            />
+          )}
+        </article>
+      ))
+    )}
   </section>
 </Layout>
