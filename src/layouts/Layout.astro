@@ -1,8 +1,5 @@
 ---
 // src/layouts/Layout.astro
-import { Icon } from 'astro-icon/components';
-import { Image } from 'astro:assets';
-import portrait from '../assets/profile.jpg';
 import '../styles/global.css';
 
 interface Props {
@@ -14,7 +11,7 @@ interface Props {
 const {
   title,
   noindex = false,
-  description = 'Kyle Loh — applied mathematics at Florida Atlantic University. Rigorous numerics for optimizers, conformal inference, and the mathematical foundations of machine learning.',
+  description = 'Kyle Loh, applied mathematics at Florida Atlantic University. Rigorous numerics for optimizers, conformal inference, and the mathematical foundations of machine learning.',
 } = Astro.props;
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -24,7 +21,6 @@ const sections = [
   { href: '/#about', label: 'About' },
   { href: '/#research', label: 'Research' },
   { href: '/#publications', label: 'Publications' },
-  { href: '/#awards', label: 'Awards' },
 ];
 
 const pages = [
@@ -32,13 +28,6 @@ const pages = [
   { href: '/teaching', label: 'Teaching' },
 ];
 
-const social = [
-  { href: 'https://github.com/Kyleloh1', icon: 'mdi:github', label: 'GitHub' },
-  { href: 'https://scholar.google.com/citations?user=JsXe-TgAAAAJ&hl=en', icon: 'simple-icons:googlescholar', label: 'Google Scholar' },
-  { href: 'https://www.youtube.com/channel/UC_G7YxEksu7C9z5A08fdv7g', icon: 'mdi:youtube', label: 'YouTube' },
-  { href: 'https://www.linkedin.com/in/kyle-loh-a2a3272a9/', icon: 'mdi:linkedin', label: 'LinkedIn' },
-  { href: 'mailto:kloh2023@fau.edu', icon: 'mdi:email-outline', label: 'Email' },
-];
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -65,64 +54,37 @@ const social = [
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"
     />
   </head>
 
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <div class="shell">
-      <aside class="rail">
-        <div class="rail-head">
-          <a href="/" aria-label="Home">
-            <Image
-              src={portrait}
-              alt="Kyle Loh"
-              class="portrait"
-              width={208}
-              densities={[1, 2]}
-              loading="eager"
-              fetchpriority="high"
-            />
-          </a>
-          <div>
-            <a class="wordmark" href="/">Kyle Loh</a>
-            <p class="role">Applied Mathematics<br />Florida Atlantic University</p>
-          </div>
-        </div>
-
-        <nav aria-label="Primary">
-          <div class="nav-group">
-            {sections.map((item) => <a href={item.href}>{item.label}</a>)}
-          </div>
-          <div class="nav-group">
-            {pages.map((item) => (
-              <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>
-                {item.label}
-              </a>
-            ))}
-            <a href="/cv.pdf" target="_blank" rel="noopener">Curriculum Vitae</a>
-          </div>
-        </nav>
-
-        <div class="social">
-          {social.map((item) => (
-            <a
-              href={item.href}
-              aria-label={item.label}
-              target={item.href.startsWith('mailto:') ? undefined : '_blank'}
-              rel={item.href.startsWith('mailto:') ? undefined : 'noopener'}
-            >
-              <Icon name={item.icon} />
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="wordmark" href="/">Kyle Loh<span aria-hidden="true">.</span></a>
+        <nav class="site-nav" aria-label="Primary">
+          {sections.map((item) => <a href={item.href}>{item.label}</a>)}
+          {pages.map((item) => (
+            <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>
+              {item.label}
             </a>
           ))}
-        </div>
-      </aside>
+          <a class="cv-link" href="/cv.pdf" target="_blank" rel="noopener" aria-label="CV (PDF)">
+            CV <span aria-hidden="true">↗</span>
+          </a>
+        </nav>
+      </div>
+    </header>
 
-      <main class="content" id="main">
-        <slot />
-      </main>
-    </div>
+    <main class="content" id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <span>Kyle Loh <span class="footer-dot" aria-hidden="true">·</span> Florida Atlantic University</span>
+      <a href="mailto:kloh2023@fau.edu">kloh2023@fau.edu</a>
+    </footer>
   </body>
 </html>

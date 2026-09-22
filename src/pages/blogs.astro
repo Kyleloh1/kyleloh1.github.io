@@ -15,7 +15,6 @@ interface Post {
   excerpt: string;
   figure?: ImageMetadata;
   alt?: string;
-  wide?: boolean;
 }
 
 // Newest first.
@@ -30,7 +29,6 @@ const posts: Post[] = [
       locality cut edge-collapse time by up to 18% against a random ordering, without changing the result of the
       computation.`,
     figure: localityFig,
-    wide: true,
     alt: `The same lamp mesh rendered four times, coloured by vertex index under random, Morton, Hilbert and
       Tipsify orderings. The random ordering is visually uniform noise, while the three locality-aware orderings
       produce smooth contiguous colour bands over the surface.`,
@@ -45,7 +43,6 @@ const posts: Post[] = [
       lattice deforms in a photograph recovers the surface deformation without visible markers, via a rectification
       pipeline built on Delaunay triangulation and finite elements, and extended to cylindrical surfaces.`,
     figure: texturesFig,
-    wide: true,
     alt: `Left: a deformed texture of overlapping loops that reads as random noise. Right: its autocorrelation,
       in which a regular lattice of bright peaks emerges from the apparent noise.`,
   },
@@ -55,7 +52,7 @@ const isExternal = (href: string) => href.startsWith('http');
 ---
 
 <Layout
-  title="Writing — Kyle Loh"
+  title="Writing | Kyle Loh"
   description="Notes and expository writing by Kyle Loh on geometry processing, applied mathematics, and machine learning."
 >
   <header class="masthead">
@@ -64,12 +61,17 @@ const isExternal = (href: string) => href.startsWith('http');
   </header>
 
   <section id="posts">
-    <h2>Posts</h2>
+    <div class="section-heading"><h2>Posts</h2></div>
     {posts.length === 0 ? (
-      <p class="empty">Nothing published yet — the first post is in progress.</p>
+      <p class="empty">No posts yet.</p>
     ) : (
       posts.map((post) => (
-        <article class:list={['entry', post.wide && 'is-wide']}>
+        <article class="entry writing-entry">
+          {post.figure && (
+            <a class="entry-image" href={post.href} target={isExternal(post.href) ? '_blank' : undefined} rel={isExternal(post.href) ? 'noopener' : undefined} aria-label={post.title}>
+              <Image class="entry-figure" src={post.figure} alt={post.alt ?? ''} width={800} loading="lazy" />
+            </a>
+          )}
           <div class="entry-body">
             <h3>
               <a
@@ -81,22 +83,15 @@ const isExternal = (href: string) => href.startsWith('http');
               </a>
             </h3>
             {post.authors && <p class="authors" set:html={post.authors} />}
-            <p>{post.excerpt}</p>
+            <p class="entry-excerpt">{post.excerpt}</p>
             <div class="meta">
               {post.venue && <span class="venue">{post.venue}</span>}
               <span>{post.date}</span>
             </div>
+            <div class="resource-links">
+              <a href={post.href} target={isExternal(post.href) ? '_blank' : undefined} rel={isExternal(post.href) ? 'noopener' : undefined}>Read post <span aria-hidden="true">↗</span></a>
+            </div>
           </div>
-          {post.figure && (
-            <Image
-              class="entry-figure"
-              src={post.figure}
-              alt={post.alt ?? ''}
-              width={post.wide ? 1200 : 336}
-              densities={post.wide ? [1] : [1, 2]}
-              loading="lazy"
-            />
-          )}
         </article>
       ))
     )}
