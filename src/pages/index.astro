@@ -23,6 +23,14 @@ interface Publication {
 
 const publications: Publication[] = [
   {
+    title: 'The Dynamics of RMSProp Beyond the Stability Threshold',
+    authors: '<span class="me">Kyle Loh</span>, J.D. Mireles James, Zhenghao Xu, Molei Tao',
+    venue: 'arXiv preprint, 2026',
+    link: 'https://arxiv.org/abs/2610.30078',
+    figure: torusDoubling,
+    alt: 'Four numerical RMSProp trajectories showing smooth invariant curves and increasingly scattered point clouds.',
+  },
+  {
     title: 'Optimal Linear Baseline Models for Scientific Machine Learning',
     authors:
       'Alexander DeLise, <span class="me">Kyle Loh</span>, Krish Patel, Meredith Teague, Andrea Arnold, Matthias Chung',
@@ -131,7 +139,14 @@ const jsonLd = {
           in adaptive optimizers such as RMSProp and Adam. My goal is to understand which mechanisms in an
           adaptive optimizer drive chaotic behavior.
         </p>
+        <p>
+          Our recent RMSProp paper proves that, for positive-definite quadratic losses, trajectories
+          eventually enter a compact trapping region even when the learning rate makes the minimizer
+          unstable. We derive explicit bounds on this region and use numerical continuation to study
+          invariant circles, tori, and chaotic motion within it.
+        </p>
         <div class="resource-links">
+          <a href="https://arxiv.org/abs/2610.30078" target="_blank" rel="noopener">RMSProp paper <span aria-hidden="true">↗</span></a>
           <a href="https://kyleloh1.github.io/RMSProp/" target="_blank" rel="noopener">RMSProp visualizer <span aria-hidden="true">↗</span></a>
           <a href="https://kyleloh1.github.io/Adam/" target="_blank" rel="noopener">Adam visualizer <span aria-hidden="true">↗</span></a>
         </div>
