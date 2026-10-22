@@ -6,7 +6,7 @@ import { Icon } from 'astro-icon/components';
 import portrait from '../assets/profile.jpg';
 import type { ImageMetadata } from 'astro';
 import encoderDecoder from '../assets/encoder-decoder.png';
-import torusDoubling from '../assets/rmsprop-torus-doubling-data-hero.png';
+import rmspropBifurcation from '../assets/rmsprop-bifurcation.png';
 import heterogeneousNulls from '../assets/decentralized-heterogeneous-nulls.png';
 
 interface Publication {
@@ -27,8 +27,8 @@ const publications: Publication[] = [
     authors: '<span class="me">Kyle Loh</span>, J.D. Mireles James, Zhenghao Xu, Molei Tao',
     venue: 'arXiv preprint, 2026',
     link: 'https://arxiv.org/abs/2610.30078',
-    figure: torusDoubling,
-    alt: 'Four numerical RMSProp trajectories showing smooth invariant curves and increasingly scattered point clouds.',
+    figure: rmspropBifurcation,
+    alt: 'RMSProp bifurcation diagram and finite-time Lyapunov exponent as the learning rate increases, with two enlarged parameter windows.',
   },
   {
     title: 'Optimal Linear Baseline Models for Scientific Machine Learning',
@@ -152,15 +152,15 @@ const jsonLd = {
         </div>
       </div>
       <figure class="research-figure">
-        <a href={torusDoubling.src} target="_blank" rel="noopener" aria-label="View RMSProp figure at full size">
+        <a href={rmspropBifurcation.src} target="_blank" rel="noopener" aria-label="View RMSProp bifurcation figure at full size">
           <Image
-            src={torusDoubling}
-            alt="A torus-doubling cascade in RMSProp, shown in four panels: smooth invariant curves break up into progressively more scattered point clouds as a parameter is varied."
+            src={rmspropBifurcation}
+            alt="RMSProp bifurcation diagram and finite-time Lyapunov exponent as the learning rate increases, with two enlarged parameter windows."
             width={1200}
             loading="lazy"
           />
         </a>
-        <figcaption>A torus-doubling cascade in RMSProp.</figcaption>
+        <figcaption>RMSProp dynamics as the learning rate increases.</figcaption>
       </figure>
     </article>
     <article class="research-topic research-text">
